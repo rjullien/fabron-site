@@ -48,6 +48,7 @@ function loadPublicContent() {
   document.getElementById('restaurants-content').innerHTML = content.restaurants || '';
   document.getElementById('nice-content').innerHTML = content.nice || '';
   document.getElementById('plages-content').innerHTML = content.plages || '';
+  document.getElementById('quartier-content').innerHTML = content.quartier || '';
 }
 
 // --- PIN input ---
