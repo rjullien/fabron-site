@@ -1,0 +1,207 @@
+:root {
+  --blue: #0077b6;
+  --blue-light: #00b4d8;
+  --blue-dark: #023e8a;
+  --sand: #f4e8c1;
+  --sand-light: #faf3e0;
+  --white: #ffffff;
+  --gray: #6b7280;
+  --gray-light: #f3f4f6;
+  --red: #ef4444;
+  --green: #22c55e;
+  --radius: 16px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --tab-height: 70px;
+  --header-height: 80px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--sand-light);
+  color: #1a1a2e;
+  min-height: 100vh;
+  padding-bottom: calc(var(--tab-height) + 20px);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+  color: white;
+  padding: 16px 20px 12px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,119,182,0.3);
+}
+.app-header h1 { font-size: 1.3rem; font-weight: 700; }
+.app-header .subtitle { font-size: 0.85rem; opacity: 0.9; margin-top: 2px; }
+.lang-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+/* Pages */
+.page { display: none; padding: 16px; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Hero card */
+.hero-card {
+  background: white;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+.hero-placeholder {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.hero-info { padding: 16px 20px; }
+.hero-info h2 { font-size: 1.4rem; color: var(--blue-dark); }
+.guest-name { font-size: 1.1rem; color: var(--gray); margin: 4px 0; }
+.dates { font-size: 0.9rem; color: var(--blue); }
+
+/* PIN card */
+.pin-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  margin: 16px 0;
+}
+.pin-card h3 { font-size: 1.1rem; color: var(--blue-dark); margin-bottom: 8px; }
+.pin-card > p { color: var(--gray); font-size: 0.9rem; margin-bottom: 20px; }
+.pin-input { display: flex; gap: 12px; justify-content: center; margin: 16px 0; }
+.pin-circle {
+  width: 52px; height: 52px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  outline: none;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+}
+.pin-circle:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,119,182,0.2); }
+.pin-circle.filled { background: var(--blue); color: white; border-color: var(--blue); }
+.pin-error { color: var(--red); font-size: 0.85rem; margin-top: 8px; }
+.pin-ok { font-size: 2rem; animation: pop 0.3s ease; }
+@keyframes pop { 0% { transform: scale(0); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+/* Content area */
+.content-area {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.content-area h1, .content-area h2, .content-area h3 {
+  color: var(--blue-dark);
+  margin: 20px 0 10px;
+}
+.content-area h1:first-child, .content-area h2:first-child, .content-area h3:first-child { margin-top: 0; }
+.content-area h2 { font-size: 1.2rem; border-bottom: 2px solid var(--sand); padding-bottom: 6px; }
+.content-area h3 { font-size: 1.05rem; }
+.content-area p { margin: 8px 0; }
+.content-area ul, .content-area ol { padding-left: 20px; margin: 8px 0; }
+.content-area li { margin: 4px 0; }
+.content-area table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; overflow-x: auto; display: block; }
+.content-area th { background: var(--blue); color: white; padding: 8px 10px; text-align: left; white-space: nowrap; }
+.content-area td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+.content-area tr:nth-child(even) td { background: var(--gray-light); }
+.content-area tr:hover td { background: var(--sand); }
+.content-area blockquote {
+  background: var(--sand);
+  border-left: 4px solid var(--blue);
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+}
+.content-area strong { color: var(--blue-dark); }
+.content-area a { color: var(--blue); }
+
+/* Locked message */
+.locked-msg {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gray);
+}
+.lock-icon { font-size: 3rem; margin-bottom: 16px; }
+
+/* WiFi card (injected in apartment) */
+.wifi-card {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+  color: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 16px 0;
+  text-align: center;
+}
+.wifi-card h3 { margin-bottom: 12px; font-size: 1.1rem; }
+.wifi-card .wifi-detail { font-size: 1.3rem; font-family: monospace; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; margin: 6px 0; display: inline-block; }
+
+/* Tab bar */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--tab-height);
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.1);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  z-index: 100;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gray);
+  transition: color 0.2s;
+  font-size: 0.65rem;
+}
+.tab.active { color: var(--blue); }
+.tab-icon { font-size: 1.3rem; }
+.tab-label { font-weight: 600; }
+
+/* Utility */
+.hidden { display: none !important; }
+
+/* Responsive */
+@media (min-width: 768px) {
+  main { max-width: 640px; margin: 0 auto; }
+  .tab-bar { max-width: 640px; left: 50%; transform: translateX(-50%); border-radius: 16px 16px 0 0; }
+}
