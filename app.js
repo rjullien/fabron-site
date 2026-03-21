@@ -162,30 +162,7 @@ function loadPrivateContent() {
     html = privateData.es;
   }
 
-  // Build WiFi card + content
-  let passwordLabel;
-  if (currentLang === 'fr') {
-    passwordLabel = 'Mot de passe';
-  } else if (currentLang === 'en') {
-    passwordLabel = 'Password';
-  } else {
-    passwordLabel = 'Contraseña';
-  }
-
-  const wifiCard = `
-    <div class="wifi-card">
-      <h3>📶 WiFi</h3>
-      <div>
-        <div class="wifi-detail">${privateData.wifi.name}</div>
-      </div>
-      <div style="margin-top:4px;font-size:0.85rem;opacity:0.9">${passwordLabel}</div>
-      <div>
-        <div class="wifi-detail">${privateData.wifi.password}</div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('apartment-content').innerHTML = wifiCard + html;
+  document.getElementById('apartment-content').innerHTML = html;
 }
 
 // --- Service Worker ---
