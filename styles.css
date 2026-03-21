@@ -131,6 +131,8 @@ body {
 .content-area h1:first-child, .content-area h2:first-child, .content-area h3:first-child { margin-top: 0; }
 .content-area h2 { font-size: 1.2rem; border-bottom: 2px solid var(--sand); padding-bottom: 6px; }
 .content-area h3 { font-size: 1.05rem; }
+.content-area h3.nav-link { cursor: pointer; transition: color 0.2s; }
+.content-area h3.nav-link:hover { color: var(--blue); }
 .content-area p { margin: 8px 0; }
 .content-area ul, .content-area ol { padding-left: 20px; margin: 8px 0; }
 .content-area li { margin: 4px 0; }

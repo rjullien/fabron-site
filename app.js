@@ -80,6 +80,31 @@ function loadPublicContent() {
   document.getElementById('nice-content').innerHTML = content.nice || '';
   document.getElementById('plages-content').innerHTML = content.plages || '';
   document.getElementById('quartier-content').innerHTML = content.quartier || '';
+  makeNavLinksClickable();
+}
+
+// --- Make navigation section titles clickable ---
+function makeNavLinksClickable() {
+  var map = {
+    'transport': 'transports', 'transporte': 'transports',
+    'quartier': 'quartier', 'area': 'quartier', 'barrio': 'quartier',
+    'nice': 'nice', 'niza': 'nice',
+    'restos': 'restaurants', 'dining': 'restaurants', 'restaurantes': 'restaurants',
+    'plages': 'plages', 'beaches': 'plages', 'playas': 'plages',
+    'appartement': 'apartment', 'apartment': 'apartment', 'apartamento': 'apartment'
+  };
+  var headings = document.querySelectorAll('#welcome-content h3');
+  headings.forEach(function(h) {
+    var text = (h.textContent || '').replace(/[🚃🏘️🏛️🍽️🏖️🔑]/g, '').trim().toLowerCase();
+    // Remove bold markers
+    var strong = h.querySelector('strong');
+    if (strong) text = strong.textContent.trim().toLowerCase();
+    var page = map[text];
+    if (page) {
+      h.classList.add('nav-link');
+      h.addEventListener('click', function() { showPage(page); });
+    }
+  });
 }
 
 // --- PIN input ---
