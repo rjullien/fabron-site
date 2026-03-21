@@ -204,6 +204,61 @@ body {
 .tab-icon { font-size: 1.3rem; }
 .tab-label { font-weight: 600; }
 
+/* Restaurant/Beach Cards */
+.content-area h4 {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px 12px 0 0;
+  padding: 14px 16px 6px;
+  margin: 16px 0 0;
+  font-size: 0.95rem;
+  color: var(--blue-dark);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.content-area h4 + p {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  padding: 0 16px 8px;
+  margin-top: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.content-area h4 + p + p em {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 8px 16px 14px;
+  margin-top: 0;
+  font-size: 0.82rem;
+  color: var(--gray);
+  display: block;
+  font-style: italic;
+}
+
+/* Handle cases where address is directly after h4 */
+.content-area h4 + p em {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 8px 16px 14px;
+  margin-top: 0;
+  font-size: 0.82rem;
+  color: var(--gray);
+  display: block;
+  font-style: italic;
+}
+
+/* Ensure proper spacing between cards */
+.content-area h4:not(:first-child) {
+  margin-top: 24px;
+}
+
 /* Utility */
 .hidden { display: none !important; }
 
