@@ -48,14 +48,22 @@ function loadPublicContent() {
   document.getElementById('restaurants-content').innerHTML = content.restaurants || '';
   document.getElementById('nice-content').innerHTML = content.nice || '';
   document.getElementById('plages-content').innerHTML = content.plages || '';
-  document.getElementById('quartier-content').innerHTML = content.quartier || '';
 }
 
 // --- PIN input ---
+function pinNext(n) {
+  const input = document.getElementById(`pin-${n}`);
+  if (input.value) {
+    input.classList.add('filled');
+    if (n < 4) document.getElementById(`pin-${n+1}`).focus();
+  } else {
+    input.classList.remove('filled');
+  }
+}
 
 async function pinSubmit() {
-  const pin = document.getElementById('pin-field').value.trim();
-  if (!pin) return;
+  const pin = [1,2,3,4].map(i => document.getElementById(`pin-${i}`).value).join('');
+  if (pin.length < 4) return;
 
   document.getElementById('pin-error').classList.add('hidden');
 
@@ -64,13 +72,18 @@ async function pinSubmit() {
     privateData = result;
     sessionStorage.setItem('fabron_private', JSON.stringify(result));
     document.getElementById('pin-success').classList.remove('hidden');
-    document.querySelector('.pin-input').classList.add('hidden');
+    document.getElementById('pin-section').querySelector('.pin-input').classList.add('hidden');
     document.getElementById('pin-section').querySelector('p').classList.add('hidden');
     setTimeout(() => onUnlocked(), 500);
   } else {
     document.getElementById('pin-error').classList.remove('hidden');
-    document.getElementById('pin-field').value = '';
-    document.getElementById('pin-field').focus();
+    [1,2,3,4].forEach(i => {
+      const el = document.getElementById(`pin-${i}`);
+      el.value = '';
+      el.classList.remove('filled');
+    });
+    document.getElementById('pin-1').focus();
+    // Shake animation
     document.querySelector('.pin-input').style.animation = 'shake 0.3s';
     setTimeout(() => document.querySelector('.pin-input').style.animation = '', 300);
   }
