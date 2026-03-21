@@ -18,13 +18,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Language toggle ---
 function toggleLang() {
-  currentLang = currentLang === 'fr' ? 'en' : 'fr';
-  document.getElementById('lang-toggle').textContent = currentLang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+  // Cycle FR → EN → ES → FR
+  if (currentLang === 'fr') {
+    currentLang = 'en';
+  } else if (currentLang === 'en') {
+    currentLang = 'es';
+  } else {
+    currentLang = 'fr';
+  }
+  
+  // Update button text to show NEXT language
+  let nextLabel;
+  if (currentLang === 'fr') {
+    nextLabel = '🇬🇧 EN';
+  } else if (currentLang === 'en') {
+    nextLabel = '🇪🇸 ES';
+  } else {
+    nextLabel = '🇫🇷 FR';
+  }
+  
+  document.getElementById('lang-toggle').textContent = nextLabel;
   document.documentElement.lang = currentLang;
-  // Update all data-fr/data-en elements
+  
+  // Update all data-fr/data-en/data-es elements
   document.querySelectorAll('[data-fr]').forEach(el => {
-    el.textContent = el.getAttribute(`data-${currentLang}`);
+    const text = el.getAttribute(`data-${currentLang}`);
+    if (text) {
+      el.textContent = text;
+    }
   });
+  
   loadPublicContent();
   if (privateData) loadPrivateContent();
 }
@@ -42,7 +65,15 @@ function showPage(page) {
 
 // --- Load public content ---
 function loadPublicContent() {
-  const content = currentLang === 'fr' ? PUBLIC_FR : PUBLIC_EN;
+  let content;
+  if (currentLang === 'fr') {
+    content = PUBLIC_FR;
+  } else if (currentLang === 'en') {
+    content = PUBLIC_EN;
+  } else {
+    content = PUBLIC_ES;
+  }
+  
   document.getElementById('welcome-content').innerHTML = content.bienvenue || '';
   document.getElementById('transports-content').innerHTML = content.transports || '';
   document.getElementById('restaurants-content').innerHTML = content.restaurants || '';
@@ -83,21 +114,46 @@ function onUnlocked() {
   loadPrivateContent();
   // Update PIN section
   const pinSection = document.getElementById('pin-section');
-  pinSection.innerHTML = `<p class="pin-ok">✅ ${currentLang === 'fr' ? 'Débloqué ! Allez dans l\'onglet Appart' : 'Unlocked! Go to Apt tab'}</p>`;
+  let message;
+  if (currentLang === 'fr') {
+    message = 'Débloqué ! Allez dans l\'onglet Appart';
+  } else if (currentLang === 'en') {
+    message = 'Unlocked! Go to Apt tab';
+  } else {
+    message = '¡Desbloqueado! Vayan a la pestaña Piso';
+  }
+  pinSection.innerHTML = `<p class="pin-ok">✅ ${message}</p>`;
 }
 
 function loadPrivateContent() {
   if (!privateData) return;
-  const html = currentLang === 'fr' ? privateData.fr : privateData.en;
+  
+  let html;
+  if (currentLang === 'fr') {
+    html = privateData.fr;
+  } else if (currentLang === 'en') {
+    html = privateData.en;
+  } else {
+    html = privateData.es;
+  }
 
   // Build WiFi card + content
+  let passwordLabel;
+  if (currentLang === 'fr') {
+    passwordLabel = 'Mot de passe';
+  } else if (currentLang === 'en') {
+    passwordLabel = 'Password';
+  } else {
+    passwordLabel = 'Contraseña';
+  }
+
   const wifiCard = `
     <div class="wifi-card">
       <h3>📶 WiFi</h3>
       <div>
         <div class="wifi-detail">${privateData.wifi.name}</div>
       </div>
-      <div style="margin-top:4px;font-size:0.85rem;opacity:0.9">${currentLang === 'fr' ? 'Mot de passe' : 'Password'}</div>
+      <div style="margin-top:4px;font-size:0.85rem;opacity:0.9">${passwordLabel}</div>
       <div>
         <div class="wifi-detail">${privateData.wifi.password}</div>
       </div>
