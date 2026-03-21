@@ -135,8 +135,11 @@ async function pinSubmit() {
 // --- Unlock private content ---
 function onUnlocked() {
   document.getElementById('apartment-locked').classList.add('hidden');
-  document.getElementById('apartment-content').classList.remove('hidden');
+  
+  // Show sub-tabs and load content into them
+  document.getElementById('apt-subtabs').classList.remove('hidden');
   loadPrivateContent();
+  
   // Update PIN section
   const pinSection = document.getElementById('pin-section');
   let message;
@@ -150,19 +153,49 @@ function onUnlocked() {
   pinSection.innerHTML = `<p class="pin-ok">✅ ${message}</p>`;
 }
 
+// --- Apartment sub-tabs ---
+function showAptTab(tab) {
+  document.querySelectorAll('.apt-tab').forEach(t => t.classList.toggle('active', t.dataset.apt === tab));
+  document.getElementById('apt-checkin').classList.toggle('hidden', tab !== 'checkin');
+  document.getElementById('apt-description').classList.toggle('hidden', tab !== 'description');
+}
+
 function loadPrivateContent() {
   if (!privateData) return;
   
-  let html;
-  if (currentLang === 'fr') {
-    html = privateData.fr;
-  } else if (currentLang === 'en') {
-    html = privateData.en;
-  } else {
-    html = privateData.es;
-  }
+  var html;
+  if (currentLang === 'fr') html = privateData.fr;
+  else if (currentLang === 'en') html = privateData.en;
+  else html = privateData.es;
 
-  document.getElementById('apartment-content').innerHTML = html;
+  // Split HTML into sections by h3 headers
+  var parts = html.split(/(?=<h3>)/);
+  var checkinKeywords = ['Accès', 'Residence Access', 'Acceso', 'Boîte à clés', 'Key Box', 'Caja de Llaves', 'Raccourci', 'Shortcut', 'Atajo', 'Instructions de départ', 'Departure', 'Instrucciones de Partida', 'Règles', 'House Rules', 'Reglas', 'En cas de problème', 'In Case of Emergency', 'En caso de Problema'];
+  
+  var checkinHtml = '';
+  var descHtml = '';
+  
+  parts.forEach(function(part) {
+    var isCheckin = checkinKeywords.some(function(kw) { return part.indexOf(kw) !== -1 && part.indexOf('<h3>') === 0; });
+    if (part.indexOf('<h3>') !== 0) {
+      // Content before any h3 (intro text, hr, etc.) goes to checkin
+      checkinHtml += part;
+    } else if (isCheckin) {
+      checkinHtml += part;
+    } else {
+      descHtml += part;
+    }
+  });
+  
+  document.getElementById('apt-checkin').innerHTML = checkinHtml;
+  document.getElementById('apt-description').innerHTML = descHtml;
+  
+  // Show checkin tab by default
+  document.getElementById('apt-checkin').classList.remove('hidden');
+  document.getElementById('apt-description').classList.add('hidden');
+  
+  // Reset to checkin tab
+  showAptTab('checkin');
 }
 
 // --- Service Worker ---
