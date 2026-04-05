@@ -39,10 +39,20 @@ body {
 }
 .app-header h1 { font-size: 1.3rem; font-weight: 700; }
 .app-header .subtitle { font-size: 0.85rem; opacity: 0.9; margin-top: 2px; }
+.header-actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; }
+.airbnb-btn {
+  display: inline-block;
+  background: #FF5A5F;
+  color: white;
+  text-decoration: none;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.airbnb-btn:hover { background: #e04850; }
 .lang-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
   background: rgba(255,255,255,0.2);
   border: 1px solid rgba(255,255,255,0.4);
   color: white;
@@ -66,11 +76,13 @@ body {
   box-shadow: var(--shadow);
   margin-bottom: 16px;
 }
-.hero-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  display: block;
+.hero-placeholder {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 .hero-info { padding: 16px 20px; }
 .hero-info h2 { font-size: 1.4rem; color: var(--blue-dark); }
@@ -131,8 +143,6 @@ body {
 .content-area h1:first-child, .content-area h2:first-child, .content-area h3:first-child { margin-top: 0; }
 .content-area h2 { font-size: 1.2rem; border-bottom: 2px solid var(--sand); padding-bottom: 6px; }
 .content-area h3 { font-size: 1.05rem; }
-.content-area h3.nav-link { cursor: pointer; transition: color 0.2s; }
-.content-area h3.nav-link:hover { color: var(--blue); }
 .content-area p { margin: 8px 0; }
 .content-area ul, .content-area ol { padding-left: 20px; margin: 8px 0; }
 .content-area li { margin: 4px 0; }
@@ -151,7 +161,6 @@ body {
 }
 .content-area strong { color: var(--blue-dark); }
 .content-area a { color: var(--blue); }
-.content-area img { width: 100%; border-radius: 12px; margin: 8px 0 16px; }
 
 /* Locked message */
 .locked-msg {
@@ -206,178 +215,8 @@ body {
 .tab-icon { font-size: 1.3rem; }
 .tab-label { font-weight: 600; }
 
-/* Restaurant/Beach Cards */
-.content-area h4 {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px 12px 0 0;
-  padding: 14px 16px 6px;
-  margin: 16px 0 0;
-  font-size: 0.95rem;
-  color: var(--blue-dark);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-
-.content-area h4 + p {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-  padding: 0 16px 8px;
-  margin-top: 0;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  color: #374151;
-}
-
-.content-area h4 + p + p em {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  padding: 8px 16px 14px;
-  margin-top: 0;
-  font-size: 0.82rem;
-  color: var(--gray);
-  display: block;
-  font-style: italic;
-}
-
-/* Handle cases where address is directly after h4 */
-.content-area h4 + p em {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  padding: 8px 16px 14px;
-  margin-top: 0;
-  font-size: 0.82rem;
-  color: var(--gray);
-  display: block;
-  font-style: italic;
-}
-
-/* Ensure proper spacing between cards */
-.content-area h4:not(:first-child) {
-  margin-top: 24px;
-}
-
 /* Utility */
 .hidden { display: none !important; }
-
-/* Apartment sub-tabs */
-.apt-subtabs {
-  display: flex;
-  gap: 0;
-  margin: 0 0 16px;
-  background: #e5e7eb;
-  border-radius: 12px;
-  padding: 3px;
-}
-.apt-tab {
-  flex: 1;
-  padding: 10px 8px;
-  border: none;
-  background: transparent;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--gray);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.apt-tab.active {
-  background: white;
-  color: var(--blue-dark);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-.apt-section {
-  background: white;
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
-  margin-bottom: 16px;
-  line-height: 1.6;
-}
-
-/* Apply content-area styles to apt-section */
-.content-area, .apt-section {
-  /* All h1-h4, p, table, etc. styles are already defined above for .content-area */
-}
-.apt-section h1, .apt-section h2, .apt-section h3 {
-  color: var(--blue-dark);
-  margin: 20px 0 10px;
-}
-.apt-section h1:first-child, .apt-section h2:first-child, .apt-section h3:first-child { margin-top: 0; }
-.apt-section h2 { font-size: 1.2rem; border-bottom: 2px solid var(--sand); padding-bottom: 6px; }
-.apt-section h3 { font-size: 1.05rem; }
-.apt-section h3.nav-link { cursor: pointer; transition: color 0.2s; }
-.apt-section h3.nav-link:hover { color: var(--blue); }
-.apt-section p { margin: 8px 0; }
-.apt-section ul, .apt-section ol { padding-left: 20px; margin: 8px 0; }
-.apt-section li { margin: 4px 0; }
-.apt-section table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.85rem; overflow-x: auto; display: block; }
-.apt-section th { background: var(--blue); color: white; padding: 8px 10px; text-align: left; white-space: nowrap; }
-.apt-section td { padding: 8px 10px; border-bottom: 1px solid #eee; }
-.apt-section tr:nth-child(even) td { background: var(--gray-light); }
-.apt-section tr:hover td { background: var(--sand); }
-.apt-section blockquote {
-  background: var(--sand);
-  border-left: 4px solid var(--blue);
-  padding: 12px 16px;
-  margin: 12px 0;
-  border-radius: 0 8px 8px 0;
-  font-size: 0.9rem;
-}
-.apt-section strong { color: var(--blue-dark); }
-.apt-section a { color: var(--blue); }
-.apt-section img { width: 100%; border-radius: 12px; margin: 8px 0 16px; }
-.apt-section h4 {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px 12px 0 0;
-  padding: 14px 16px 6px;
-  margin: 16px 0 0;
-  font-size: 0.95rem;
-  color: var(--blue-dark);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-.apt-section h4 + p {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-  padding: 0 16px 8px;
-  margin-top: 0;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  color: #374151;
-}
-.apt-section h4 + p + p em {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  padding: 8px 16px 14px;
-  margin-top: 0;
-  font-size: 0.82rem;
-  color: var(--gray);
-  display: block;
-  font-style: italic;
-}
-.apt-section h4 + p em {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  padding: 8px 16px 14px;
-  margin-top: 0;
-  font-size: 0.82rem;
-  color: var(--gray);
-  display: block;
-  font-style: italic;
-}
-.apt-section h4:not(:first-child) {
-  margin-top: 24px;
-}
 
 /* Responsive */
 @media (min-width: 768px) {
