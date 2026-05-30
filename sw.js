@@ -1,5 +1,5 @@
-const CACHE_NAME = 'fabron-guide-v2';
-const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'crypto.js', 'manifest.json'];
+const CACHE_NAME = 'fabron-guide-v12';
+const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'crypto.js', 'manifest.json', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
