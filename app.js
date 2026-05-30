@@ -2,6 +2,8 @@
 let currentLang = 'fr';
 let currentPage = 'home';
 let privateData = null;
+const LANGS = ['fr', 'en', 'es'];
+const LANG_LABELS = { fr: '\ud83c\uddec\ud83c\udde7 EN', en: '\ud83c\uddea\ud83c\uddf8 ES', es: '\ud83c\uddeb\ud83c\uddf7 FR' };
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,10 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Language toggle ---
 function toggleLang() {
-  currentLang = currentLang === 'fr' ? 'en' : 'fr';
-  document.getElementById('lang-toggle').textContent = currentLang === 'fr' ? '🇬🇧 EN' : '🇫🇷 FR';
+  const idx = LANGS.indexOf(currentLang);
+  currentLang = LANGS[(idx + 1) % LANGS.length];
+  document.getElementById('lang-toggle').textContent = LANG_LABELS[currentLang];
   document.documentElement.lang = currentLang;
-  // Update all data-fr/data-en elements
+  // Update all data-fr/data-en/data-es elements
   document.querySelectorAll('[data-fr]').forEach(el => {
     const val = el.getAttribute(`data-${currentLang}`);
     if (val) el.textContent = val;
@@ -43,7 +46,7 @@ function showPage(page) {
 
 // --- Load public content ---
 function loadPublicContent() {
-  const content = currentLang === 'fr' ? PUBLIC_FR : PUBLIC_EN;
+  const content = currentLang === 'fr' ? PUBLIC_FR : currentLang === 'en' ? PUBLIC_EN : PUBLIC_ES;
   document.getElementById('welcome-content').innerHTML = content.bienvenue || '';
   document.getElementById('transports-content').innerHTML = content.transports || '';
   document.getElementById('restaurants-content').innerHTML = content.restaurants || '';
@@ -82,22 +85,29 @@ function onUnlocked() {
   document.getElementById('apartment-locked').classList.add('hidden');
   document.getElementById('apartment-content').classList.remove('hidden');
   loadPrivateContent();
-  // Update PIN section
+  // Update code section
   const pinSection = document.getElementById('pin-section');
-  pinSection.innerHTML = `<p class="pin-ok">✅ ${currentLang === 'fr' ? 'Débloqué ! Allez dans l\'onglet Appart' : 'Unlocked! Go to Apt tab'}</p>`;
+  const msg = currentLang === 'fr' ? 'D\u00e9bloqu\u00e9 ! Allez dans l\'onglet Appart'
+    : currentLang === 'en' ? 'Unlocked! Go to Apt tab'
+    : '\u00a1Desbloqueado! Ve a la pesta\u00f1a Appart';
+  pinSection.innerHTML = `<p class="pin-ok">\u2705 ${msg}</p>`;
 }
 
 function loadPrivateContent() {
   if (!privateData) return;
-  const html = currentLang === 'fr' ? privateData.fr : privateData.en;
+  const html = currentLang === 'fr' ? privateData.fr
+    : currentLang === 'en' ? privateData.en
+    : (privateData.es || privateData.en);
 
   // Build WiFi info card (credentials in Airbnb app)
   const wifiLabel = currentLang === 'fr'
-    ? 'Les identifiants WiFi (réseau et mot de passe) sont disponibles dans l\'app Airbnb, rubrique « Informations du logement ».'
-    : 'WiFi credentials (network name and password) are available in the Airbnb app, under "Listing details".';
+    ? 'Les identifiants WiFi (r\u00e9seau et mot de passe) sont disponibles dans l\'app Airbnb, rubrique \u00ab\u00a0Informations du logement\u00a0\u00bb.'
+    : currentLang === 'en'
+    ? 'WiFi credentials (network name and password) are available in the Airbnb app, under "Listing details".'
+    : 'Las credenciales WiFi (nombre de red y contrase\u00f1a) est\u00e1n disponibles en la app Airbnb, secci\u00f3n \u00ab\u00a0Informaci\u00f3n del alojamiento\u00a0\u00bb.';
   const wifiCard = `
     <div class="wifi-card">
-      <h3>📶 WiFi</h3>
+      <h3>\ud83d\udcf6 WiFi</h3>
       <div style="font-size:0.95rem;padding:8px 0">${wifiLabel}</div>
     </div>
   `;
