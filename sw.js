@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fabron-guide-v3';
+const CACHE_NAME = 'fabron-guide-v4';
 const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'crypto.js', 'manifest.json'];
 
 self.addEventListener('install', e => {

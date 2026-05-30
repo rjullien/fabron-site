@@ -23,7 +23,8 @@ function toggleLang() {
   document.documentElement.lang = currentLang;
   // Update all data-fr/data-en elements
   document.querySelectorAll('[data-fr]').forEach(el => {
-    el.textContent = el.getAttribute(`data-${currentLang}`);
+    const val = el.getAttribute(`data-${currentLang}`);
+    if (val) el.textContent = val;
   });
   loadPublicContent();
   if (privateData) loadPrivateContent();
