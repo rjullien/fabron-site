@@ -2,17 +2,9 @@
 let currentLang = 'fr';
 let currentPage = 'home';
 let privateData = null;
-const LANGS = ['fr', 'en', 'es'];
-const LANG_LABELS = { fr: '\ud83c\uddec\ud83c\udde7 EN', en: '\ud83c\uddea\ud83c\uddf8 ES', es: '\ud83c\uddeb\ud83c\uddf7 FR' };
-const APP_VERSION = 'v11';
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
-  // Invalidate stale session cache on version change
-  if (sessionStorage.getItem('fabron_version') !== APP_VERSION) {
-    sessionStorage.removeItem('fabron_private');
-    sessionStorage.setItem('fabron_version', APP_VERSION);
-  }
   loadPublicContent();
   // Check if PIN was already entered (session)
   const saved = sessionStorage.getItem('fabron_private');
@@ -26,15 +18,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Language toggle ---
 function toggleLang() {
-  const idx = LANGS.indexOf(currentLang);
-  currentLang = LANGS[(idx + 1) % LANGS.length];
-  document.getElementById('lang-toggle').textContent = LANG_LABELS[currentLang];
+  // Cycle FR → EN → ES → FR
+  if (currentLang === 'fr') {
+    currentLang = 'en';
+  } else if (currentLang === 'en') {
+    currentLang = 'es';
+  } else {
+    currentLang = 'fr';
+  }
+  
+  // Update button text to show NEXT language
+  let nextLabel;
+  if (currentLang === 'fr') {
+    nextLabel = '🇬🇧 EN';
+  } else if (currentLang === 'en') {
+    nextLabel = '🇪🇸 ES';
+  } else {
+    nextLabel = '🇫🇷 FR';
+  }
+  
+  document.getElementById('lang-toggle').textContent = nextLabel;
   document.documentElement.lang = currentLang;
+  
   // Update all data-fr/data-en/data-es elements
   document.querySelectorAll('[data-fr]').forEach(el => {
-    const val = el.getAttribute(`data-${currentLang}`);
-    if (val) el.textContent = val;
+    const text = el.getAttribute(`data-${currentLang}`);
+    if (text) {
+      el.textContent = text;
+    }
   });
+  
   loadPublicContent();
   if (privateData) loadPrivateContent();
 }
@@ -52,35 +65,47 @@ function showPage(page) {
 
 // --- Load public content ---
 function loadPublicContent() {
-  const content = currentLang === 'fr' ? PUBLIC_FR : currentLang === 'en' ? PUBLIC_EN : PUBLIC_ES;
+  let content;
+  if (currentLang === 'fr') {
+    content = PUBLIC_FR;
+  } else if (currentLang === 'en') {
+    content = PUBLIC_EN;
+  } else {
+    content = PUBLIC_ES;
+  }
+  
   document.getElementById('welcome-content').innerHTML = content.bienvenue || '';
   document.getElementById('transports-content').innerHTML = content.transports || '';
   document.getElementById('restaurants-content').innerHTML = content.restaurants || '';
   document.getElementById('nice-content').innerHTML = content.nice || '';
+  document.getElementById('evenements-content').innerHTML = content.evenements || '';
   document.getElementById('plages-content').innerHTML = content.plages || '';
   document.getElementById('quartier-content').innerHTML = content.quartier || '';
-  wireHomeNav();
+  makeNavLinksClickable();
 }
 
-// --- Make home headings clickable → jump to the right tab ---
-const NAV_MAP = {
-  transport:'transports', transporte:'transports',
-  quartier:'quartier', area:'quartier', barrio:'quartier',
-  nice:'nice', niza:'nice',
-  restos:'restaurants', dining:'restaurants', restaurantes:'restaurants',
-  plages:'plages', beaches:'plages', playas:'plages',
-  appartement:'apartment', apartment:'apartment', apartamento:'apartment'
-};
-function wireHomeNav() {
-  document.querySelectorAll('#welcome-content h3').forEach(h => {
-    const strong = h.querySelector('strong');
-    const key = (strong ? strong.textContent : h.textContent)
-      .replace(/[^\p{L}]/gu, '').toLowerCase();
-    const page = NAV_MAP[key];
-    if (!page) return;
-    h.style.cursor = 'pointer';
-    h.classList.add('nav-link');
-    h.onclick = () => showPage(page);
+// --- Make navigation section titles clickable ---
+function makeNavLinksClickable() {
+  var map = {
+    'transport': 'transports', 'transporte': 'transports',
+    'quartier': 'quartier', 'area': 'quartier', 'barrio': 'quartier',
+    'nice': 'nice', 'niza': 'nice',
+    'sorties': 'evenements', 'events': 'evenements', 'planes': 'evenements',
+    'restos': 'restaurants', 'dining': 'restaurants', 'restaurantes': 'restaurants',
+    'plages': 'plages', 'beaches': 'plages', 'playas': 'plages',
+    'appartement': 'apartment', 'apartment': 'apartment', 'apartamento': 'apartment'
+  };
+  var headings = document.querySelectorAll('#welcome-content h3');
+  headings.forEach(function(h) {
+    var text = (h.textContent || '').replace(/[🚃🏘️🏛️🍽️🏖️🔑]/g, '').trim().toLowerCase();
+    // Remove bold markers
+    var strong = h.querySelector('strong');
+    if (strong) text = strong.textContent.trim().toLowerCase();
+    var page = map[text];
+    if (page) {
+      h.classList.add('nav-link');
+      h.addEventListener('click', function() { showPage(page); });
+    }
   });
 }
 
@@ -112,36 +137,67 @@ async function pinSubmit() {
 // --- Unlock private content ---
 function onUnlocked() {
   document.getElementById('apartment-locked').classList.add('hidden');
-  document.getElementById('apartment-content').classList.remove('hidden');
+  
+  // Show sub-tabs and load content into them
+  document.getElementById('apt-subtabs').classList.remove('hidden');
   loadPrivateContent();
-  // Update code section
+  
+  // Update PIN section
   const pinSection = document.getElementById('pin-section');
-  const msg = currentLang === 'fr' ? 'D\u00e9bloqu\u00e9 ! Allez dans l\'onglet Appart'
-    : currentLang === 'en' ? 'Unlocked! Go to Apt tab'
-    : '\u00a1Desbloqueado! Ve a la pesta\u00f1a Appart';
-  pinSection.innerHTML = `<p class="pin-ok">\u2705 ${msg}</p>`;
+  let message;
+  if (currentLang === 'fr') {
+    message = 'Débloqué ! Allez dans l\'onglet Appart';
+  } else if (currentLang === 'en') {
+    message = 'Unlocked! Go to Apt tab';
+  } else {
+    message = '¡Desbloqueado! Vayan a la pestaña Piso';
+  }
+  pinSection.innerHTML = `<p class="pin-ok">✅ ${message}</p>`;
+}
+
+// --- Apartment sub-tabs ---
+function showAptTab(tab) {
+  document.querySelectorAll('.apt-tab').forEach(t => t.classList.toggle('active', t.dataset.apt === tab));
+  document.getElementById('apt-checkin').classList.toggle('hidden', tab !== 'checkin');
+  document.getElementById('apt-description').classList.toggle('hidden', tab !== 'description');
 }
 
 function loadPrivateContent() {
   if (!privateData) return;
-  const html = currentLang === 'fr' ? privateData.fr
-    : currentLang === 'en' ? privateData.en
-    : (privateData.es || privateData.en);
+  
+  var html;
+  if (currentLang === 'fr') html = privateData.fr;
+  else if (currentLang === 'en') html = privateData.en;
+  else html = privateData.es;
 
-  // Build WiFi info card (credentials in Airbnb app)
-  const wifiLabel = currentLang === 'fr'
-    ? 'Les identifiants WiFi (r\u00e9seau et mot de passe) sont disponibles dans l\'app Airbnb, rubrique \u00ab\u00a0Informations du logement\u00a0\u00bb.'
-    : currentLang === 'en'
-    ? 'WiFi credentials (network name and password) are available in the Airbnb app, under "Listing details".'
-    : 'Las credenciales WiFi (nombre de red y contrase\u00f1a) est\u00e1n disponibles en la app Airbnb, secci\u00f3n \u00ab\u00a0Informaci\u00f3n del alojamiento\u00a0\u00bb.';
-  const wifiCard = `
-    <div class="wifi-card">
-      <h3>\ud83d\udcf6 WiFi</h3>
-      <div style="font-size:0.95rem;padding:8px 0">${wifiLabel}</div>
-    </div>
-  `;
-
-  document.getElementById('apartment-content').innerHTML = wifiCard + html;
+  // Split HTML into sections by h3 headers
+  var parts = html.split(/(?=<h3>)/);
+  var checkinKeywords = ['Accès', 'Residence Access', 'Acceso', 'Boîte à clés', 'Key Box', 'Caja de Llaves', 'Raccourci', 'Shortcut', 'Atajo', 'Instructions de départ', 'Departure', 'Instrucciones de Partida', 'Règles', 'House Rules', 'Reglas', 'En cas de problème', 'In Case of Emergency', 'En caso de Problema'];
+  
+  var checkinHtml = '';
+  var descHtml = '';
+  
+  parts.forEach(function(part) {
+    var isCheckin = checkinKeywords.some(function(kw) { return part.indexOf(kw) !== -1 && part.indexOf('<h3>') === 0; });
+    if (part.indexOf('<h3>') !== 0) {
+      // Content before any h3 (intro text, hr, etc.) goes to checkin
+      checkinHtml += part;
+    } else if (isCheckin) {
+      checkinHtml += part;
+    } else {
+      descHtml += part;
+    }
+  });
+  
+  document.getElementById('apt-checkin').innerHTML = checkinHtml;
+  document.getElementById('apt-description').innerHTML = descHtml;
+  
+  // Show checkin tab by default
+  document.getElementById('apt-checkin').classList.remove('hidden');
+  document.getElementById('apt-description').classList.add('hidden');
+  
+  // Reset to checkin tab
+  showAptTab('checkin');
 }
 
 // --- Service Worker ---
