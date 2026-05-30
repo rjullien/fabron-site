@@ -4,9 +4,15 @@ let currentPage = 'home';
 let privateData = null;
 const LANGS = ['fr', 'en', 'es'];
 const LANG_LABELS = { fr: '\ud83c\uddec\ud83c\udde7 EN', en: '\ud83c\uddea\ud83c\uddf8 ES', es: '\ud83c\uddeb\ud83c\uddf7 FR' };
+const APP_VERSION = 'v9';
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
+  // Invalidate stale session cache on version change
+  if (sessionStorage.getItem('fabron_version') !== APP_VERSION) {
+    sessionStorage.removeItem('fabron_private');
+    sessionStorage.setItem('fabron_version', APP_VERSION);
+  }
   loadPublicContent();
   // Check if PIN was already entered (session)
   const saved = sessionStorage.getItem('fabron_private');
