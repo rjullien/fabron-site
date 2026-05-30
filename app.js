@@ -53,6 +53,29 @@ function loadPublicContent() {
   document.getElementById('nice-content').innerHTML = content.nice || '';
   document.getElementById('plages-content').innerHTML = content.plages || '';
   document.getElementById('quartier-content').innerHTML = content.quartier || '';
+  wireHomeNav();
+}
+
+// --- Make home headings clickable → jump to the right tab ---
+const NAV_MAP = {
+  transport:'transports', transporte:'transports',
+  quartier:'quartier', area:'quartier', barrio:'quartier',
+  nice:'nice', niza:'nice',
+  restos:'restaurants', dining:'restaurants', restaurantes:'restaurants',
+  plages:'plages', beaches:'plages', playas:'plages',
+  appartement:'apartment', apartment:'apartment', apartamento:'apartment'
+};
+function wireHomeNav() {
+  document.querySelectorAll('#welcome-content h3').forEach(h => {
+    const strong = h.querySelector('strong');
+    const key = (strong ? strong.textContent : h.textContent)
+      .replace(/[^\p{L}]/gu, '').toLowerCase();
+    const page = NAV_MAP[key];
+    if (!page) return;
+    h.style.cursor = 'pointer';
+    h.classList.add('nav-link');
+    h.onclick = () => showPage(page);
+  });
 }
 
 // --- PIN input ---

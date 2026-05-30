@@ -229,3 +229,5 @@ body {
   main { max-width: 640px; margin: 0 auto; }
   .tab-bar { max-width: 640px; left: 50%; transform: translateX(-50%); border-radius: 16px 16px 0 0; }
 }
+
+#welcome-content h3.nav-link { text-decoration: underline; text-underline-offset: 3px; color: var(--blue); }
