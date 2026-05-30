@@ -90,17 +90,14 @@ function loadPrivateContent() {
   if (!privateData) return;
   const html = currentLang === 'fr' ? privateData.fr : privateData.en;
 
-  // Build WiFi card + content
+  // Build WiFi info card (credentials in Airbnb app)
+  const wifiLabel = currentLang === 'fr'
+    ? 'Les identifiants WiFi (réseau et mot de passe) sont disponibles dans l\'app Airbnb, rubrique « Informations du logement ».'
+    : 'WiFi credentials (network name and password) are available in the Airbnb app, under "Listing details".';
   const wifiCard = `
     <div class="wifi-card">
       <h3>📶 WiFi</h3>
-      <div>
-        <div class="wifi-detail">${privateData.wifi.name}</div>
-      </div>
-      <div style="margin-top:4px;font-size:0.85rem;opacity:0.9">${currentLang === 'fr' ? 'Mot de passe' : 'Password'}</div>
-      <div>
-        <div class="wifi-detail">${privateData.wifi.password}</div>
-      </div>
+      <div style="font-size:0.95rem;padding:8px 0">${wifiLabel}</div>
     </div>
   `;
 
