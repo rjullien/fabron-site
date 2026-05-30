@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fabron-guide-v2';
+const CACHE_NAME = 'fabron-guide-v1';
 const ASSETS = ['./', 'index.html', 'styles.css', 'app.js', 'crypto.js', 'manifest.json'];
 
 self.addEventListener('install', e => {
@@ -15,10 +15,10 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    fetch(e.request).then(resp => {
+    caches.match(e.request).then(r => r || fetch(e.request).then(resp => {
       const clone = resp.clone();
       caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
       return resp;
-    }).catch(() => caches.match(e.request))
+    }))
   );
 });
