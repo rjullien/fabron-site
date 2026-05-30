@@ -4,7 +4,7 @@ let currentPage = 'home';
 let privateData = null;
 const LANGS = ['fr', 'en', 'es'];
 const LANG_LABELS = { fr: '\ud83c\uddec\ud83c\udde7 EN', en: '\ud83c\uddea\ud83c\uddf8 ES', es: '\ud83c\uddeb\ud83c\uddf7 FR' };
-const APP_VERSION = 'v9';
+const APP_VERSION = 'v11';
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
