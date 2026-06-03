@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0077b6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Studio vue mer 180° à Nice Fabron — Plage à pied, parking, clim</title>
+  <meta name="description" content="Studio tout équipé avec vue mer panoramique 180° à Nice Fabron. Plage à pied, tram L2, parking gratuit, climatisation. Quartier calme, Côte d'Azur.">
+  <meta name="keywords" content="location vacances Nice, studio vue mer, Fabron, plage à pied, Côte d'Azur, vacation rental Nice, sea view apartment">
+  <link rel="canonical" href="https://rjullien.github.io/fabron-site/">
+  <!-- Open Graph (Facebook, WhatsApp, Telegram) -->
+  <meta property="og:title" content="Studio vue mer 180° à Nice Fabron — Plage à pied">
+  <meta property="og:description" content="Studio tout équipé avec vue mer panoramique. Plage à pied, tram, parking gratuit, clim. Quartier calme de Fabron, Nice Côte d'Azur.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rjullien.github.io/fabron-site/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="es_ES">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Studio vue mer 180° à Nice Fabron — Plage à pied">
+  <meta name="twitter:description" content="Studio tout équipé, vue mer panoramique, plage à pied. Fabron, Nice Côte d'Azur.">
+  <meta name="twitter:image" content="https://rjullien.github.io/fabron-site/images/vue-mer-balcon.jpg">
+  <meta property="og:image" content="https://rjullien.github.io/fabron-site/images/vue-mer-balcon.jpg">
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    "name": "Studio vue mer 180° Fabron Nice",
+    "description": "Studio tout équipé avec vue mer panoramique 180° à Nice Fabron. Plage à pied, tram L2, parking gratuit, climatisation.",
+    "url": "https://rjullien.github.io/fabron-site/",
+    "sameAs": "https://airbnb.com/h/fabron",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Nice",
+      "addressRegion": "Provence-Alpes-Côte d'Azur",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 43.6867,
+      "longitude": 7.2228
+    },
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Vue mer panoramique 180°", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Plage à pied", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Parking gratuit", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Climatisation", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Balcon vue mer", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Tramway L2 à proximité", "value": true }
+    ],
+    "potentialAction": {
+      "@type": "ReserveAction",
+      "target": "https://airbnb.com/h/fabron"
+    }
+  }
+  </script>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <h1>🌴 Studio vue mer Nice Fabron</h1>
+    <p class="subtitle">Plage à pied · Vue mer 180° · Parking · Clim</p>
+    <div class="header-actions">
+      <a href="https://airbnb.com/h/fabron" target="_blank" rel="noopener" class="airbnb-btn">🏠 Réserver sur Airbnb</a>
+      <button id="lang-toggle" class="lang-btn" onclick="toggleLang()">🇬🇧 EN</button>
+    </div>
+  </header>
+
+  <!-- Pages -->
+  <main id="content">
+    <!-- Home -->
+    <section id="page-home" class="page active">
+      <div class="hero-card">
+        <img src="images/vue-mer-balcon.jpg" alt="Vue mer 180° depuis le balcon" class="hero-image" loading="lazy">
+        <div class="hero-info">
+          <h2 data-fr="Bienvenue" data-en="Welcome" data-es="Bienvenido">Bienvenue</h2>
+          <p class="subtitle" data-fr="Votre guide pour un séjour parfait à Nice — plage à pied !" data-en="Your guide for a perfect stay in Nice — beach within walking distance!" data-es="Su guía para una estancia perfecta en Niza — ¡playa a pie!">Votre guide pour un séjour parfait à Nice — plage à pied !</p>
+        </div>
+      </div>
+      <div id="welcome-content" class="content-area"></div>
+      <!-- PIN unlock -->
+      <div id="pin-section" class="pin-card">
+        <h3 data-fr="🔑 Accéder au guide de l'appartement" data-en="🔑 Access apartment guide" data-es="🔑 Acceder a la guía del apartamento">🔑 Accéder au guide de l'appartement</h3>
+        <p data-fr="Entrez le code fourni par votre hôte" data-en="Enter the code provided by your host" data-es="Introduzca el código proporcionado por su anfitrión">Entrez le code fourni par votre hôte</p>
+        <div class="pin-input">
+          <input type="password" id="pin-field" class="pin-text" placeholder="Code d'accès" onkeydown="if(event.key==='Enter')pinSubmit()">
+          <button class="pin-submit-btn" onclick="pinSubmit()">→</button>
+        </div>
+        <p id="pin-error" class="pin-error hidden" data-fr="Code incorrect" data-en="Incorrect code" data-es="Código incorrecto">Code incorrect</p>
+        <div id="pin-success" class="hidden">
+          <p class="pin-ok">✅</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apartment (locked) -->
+    <section id="page-apartment" class="page">
+      <div id="apartment-locked" class="locked-msg">
+        <div class="lock-icon">🔒</div>
+        <p data-fr="Entrez le code sur la page d'accueil pour débloquer" data-en="Enter the code on the home page to unlock" data-es="Introduzca el código en la página de inicio para desbloquear">Entrez le code sur la page d'accueil pour débloquer</p>
+      </div>
+      <div id="apartment-content" class="content-area hidden"></div>
+    </section>
+
+    <!-- Transports -->
+    <section id="page-transports" class="page">
+      <div id="transports-content" class="content-area"></div>
+    </section>
+
+    <!-- Restaurants -->
+    <section id="page-restaurants" class="page">
+      <div id="restaurants-content" class="content-area"></div>
+    </section>
+
+    <!-- Nice -->
+    <section id="page-nice" class="page">
+      <div id="nice-content" class="content-area"></div>
+    </section>
+
+    <!-- Plages -->
+    <section id="page-plages" class="page">
+      <div id="plages-content" class="content-area"></div>
+    </section>
+
+    <!-- Quartier -->
+    <section id="page-quartier" class="page">
+      <div id="quartier-content" class="content-area"></div>
+    </section>
+  </main>
+
+  <!-- Tab bar -->
+  <nav class="tab-bar">
+    <button class="tab active" onclick="showPage('home')" data-page="home" aria-label="Accueil">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-label" data-fr="Accueil" data-en="Home" data-es="Inicio">Accueil</span>
+    </button>
+    <button class="tab" onclick="showPage('apartment')" data-page="apartment" aria-label="Appartement">
+      <span class="tab-icon">🔑</span>
+      <span class="tab-label" data-fr="Appart" data-en="Apt" data-es="Appart">Appart</span>
+    </button>
+    <button class="tab" onclick="showPage('transports')" data-page="transports" aria-label="Transports">
+      <span class="tab-icon">🚃</span>
+      <span class="tab-label" data-fr="Transport" data-en="Transport">Transport</span>
+    </button>
+    <button class="tab" onclick="showPage('restaurants')" data-page="restaurants" aria-label="Restaurants">
+      <span class="tab-icon">🍽️</span>
+      <span class="tab-label" data-fr="Restos" data-en="Dining" data-es="Restos">Restos</span>
+    </button>
+    <button class="tab" onclick="showPage('nice')" data-page="nice" aria-label="Nice">
+      <span class="tab-icon">🏛️</span>
+      <span class="tab-label">Nice</span>
+    </button>
+    <button class="tab" onclick="showPage('plages')" data-page="plages" aria-label="Plages">
+      <span class="tab-icon">🏖️</span>
+      <span class="tab-label" data-fr="Plages" data-en="Beaches" data-es="Playas">Plages</span>
+    </button>
+    <button class="tab" onclick="showPage('quartier')" data-page="quartier" aria-label="Quartier">
+      <span class="tab-icon">🏘️</span>
+      <span class="tab-label" data-fr="Quartier" data-en="Area" data-es="Barrio">Quartier</span>
+    </button>
+  </nav>
+
+  <script>
+    const ENCRYPTED_PRIVATE = "{{ENCRYPTED_PRIVATE}}";
+    const PUBLIC_FR = {{PUBLIC_CONTENT_FR}};
+    const PUBLIC_EN = {{PUBLIC_CONTENT_EN}};
+    const PUBLIC_ES = {{PUBLIC_CONTENT_ES}};
+  </script>
+  <script src="crypto.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
